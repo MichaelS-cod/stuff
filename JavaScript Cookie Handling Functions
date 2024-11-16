@@ -1,0 +1,47 @@
+This JavaScript snippet provides two utility functions for working with cookies: setCookie and getCookie. These functions allow you to easily create, store, and retrieve cookies in the browser.
+
+setCookie Function
+The setCookie function is used to create a cookie or update an existing one.
+
+Syntaxis:
+function setCookie(name, value, days) {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
+}
+
+Parameters:
+name: The name of the cookie.
+value: The value to store in the cookie.
+days: The number of days until the cookie expires.
+Explanation:
+Date.now() + days * 864e5: Calculates the expiration date by adding the specified number of days to the current date. The value 864e5 represents the number of milliseconds in one day (86400000 milliseconds).
+expires.toUTCString(): Converts the expiration date to a UTC string format, which is required for the cookie expiration date.
+document.cookie: Sets the cookie by concatenating the name, encoded value, expiration date, and specifying the path (/) to make it accessible site-wide.
+
+Example:
+// Create a cookie named 'user' with the value 'JohnDoe' that expires in 7 days.
+setCookie('user', 'JohnDoe', 7);
+
+Syntaxis:
+getCookie Function
+The getCookie function retrieves the value of a specified cookie.
+
+Syntaxis:
+function getCookie(name) {
+    return document.cookie.split('; ').reduce((r, v) => {
+        const parts = v.split('=');
+        return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+    }, '');
+}
+
+Parameters:
+name: The name of the cookie to retrieve.
+Explanation:
+document.cookie.split('; '): Splits the cookie string into an array of individual cookies.
+reduce((r, v) => ...): Iterates through each cookie in the array. If the cookie's name matches the specified name, it decodes and returns the cookie's value. If not, it returns the current result (r).
+decodeURIComponent(parts[1]): Decodes the cookie value, as it was encoded when it was set.
+
+Example:
+// Retrieve the value of the 'user' cookie.
+const userName = getCookie('user');
+console.log(userName); // Output: 'JohnDoe' if the cookie exists
